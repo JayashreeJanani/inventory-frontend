@@ -1,0 +1,43 @@
+<h2>Inventory List</h2>
+
+@if (loading) {
+  <div>Loading inventory...</div>
+}
+
+@if (error) {
+  <div class="error">{{ error }}</div>
+}
+
+@if (!loading && inventoryItems.length > 0) {
+  <!-- table code -->
+}
+
+@if (!loading && inventoryItems.length === 0) {
+  <div>No inventory items found.</div>
+}
+
+<table *ngIf="!loading && inventoryItems.length > 0" border="1" cellpadding="8" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Stock Code</th>
+            <th>Warehouse</th>
+            <th>Description</th>
+            <th>Current Stock</th>
+            <th>Average Price</th>
+            <th>Country</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of inventoryItems">  <!-- Fixed: Use inventoryItems (consistent with the table condition) -->
+            <td>
+              <a [routerLink]="['/product', item.StockCode]">{{ item.StockCode }}</a>  <!-- Added routerLink for navigation -->
+            </td>             
+            <td>{{ item.WarehouseID }}</td>
+            <td>{{ item.Description }}</td>  <!-- Note: Typo in 'Desciption' – should be 'Description' if that's the property name -->
+            <td>{{ item.CurrentStock }}</td>
+            <td>{{ item.AveragePrice }}</td>
+            <td>{{ item.Country }}</td>
+        </tr>
+    </tbody>
+</table>
+<div *ngIf="!loading && inventoryItems.length === 0">No inventory items found.</div>  <!-- Fixed: Use inventoryItems for consistency -->

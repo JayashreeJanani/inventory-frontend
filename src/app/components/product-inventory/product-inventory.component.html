@@ -1,0 +1,41 @@
+<h2> Product Inventory - {{stockCode}}</h2>
+@if (loading) {
+  <div>Loading inventory...</div>
+}
+
+@if (error) {
+  <div class="error">{{ error }}</div>
+}
+@if (!loading && inventoryItems.length > 0) {
+  <!-- table code -->
+}
+
+@if (!loading && inventoryItems.length === 0) {
+  <div>No inventory items found for this Product ID.</div>
+}
+@if (!loading && inventoryItems.length > 0) {
+  <table border="1" cellpadding="8" cellspacing="0">
+      <thead>
+          <tr>
+              <th>Stock Code</th>
+              <th>Warehouse</th>
+              <th>Description</th>
+              <th>Current Stock</th>
+              <th>Average Price</th>
+              <th>Country</th>
+          </tr>
+      </thead>
+      <tbody>
+          @for (item of inventoryItems; track item.StockCode) {
+              <tr>
+                  <td>{{ item.StockCode }}</td>
+                  <td>{{ item.WarehouseID }}</td>
+                  <td>{{ item.Description }}</td>
+                  <td>{{ item.CurrentStock }}</td>
+                  <td>{{ item.AveragePrice }}</td>
+                  <td>{{ item.Country }}</td>
+              </tr>
+          }
+      </tbody>
+  </table>
+}
