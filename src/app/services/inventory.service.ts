@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+
+//This interface is used for 3 API endpoints: 
+// 1. GET/api/inventory, 
+// 2. GET/api/inventory/"stock_code", 
+// 3. GET/api/inventory/"stock_code"/"warehouse_id"
  export interface InventoryItem {
   StockCode: string;
   WarehouseID: string;
@@ -10,6 +15,21 @@ import { Observable } from 'rxjs';
   LastUpdated?: string;
   Country?: string;
  }
+
+export interface InventoryTransaction {
+  stockCode: string;
+  TransactionKey: string;
+  WarehouseID: string;
+  Invoice: string;
+  CustomerID: string;
+  InvoiceDate: string;
+  Quantity: number;
+  Price: number;
+  Country: string;
+  Description: string;
+}
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -28,4 +48,9 @@ export class InventoryService {
   getInventoryByStockCodeAndWarehouse(stockCode: string, warehouseId: string): Observable<InventoryItem>{
     return this.http.get<InventoryItem>(`${this.apiUrl}/${stockCode}/${warehouseId}`);
   }//This is for the api: GET/api/inventory/"stock_code"/"warehouse_id"
+
+  getTransactionsByStockCode(stockCode: string): Observable<InventoryTransaction[]> {
+    return this.http.get<InventoryTransaction[]>(`http://127.0.0.1:8000/api/transactions/${stockCode}`);
+  }//This is for the api: GET/api/inventory/"stock_code"/transactions
+
 }

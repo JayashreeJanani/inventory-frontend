@@ -23,6 +23,7 @@
               <th>Current Stock</th>
               <th>Average Price</th>
               <th>Country</th>
+              <th>Transactions</th>
           </tr>
       </thead>
       <tbody>
@@ -38,6 +39,10 @@
                   <td>{{ item.CurrentStock }}</td>
                   <td>{{ item.AveragePrice }}</td>
                   <td>{{ item.Country }}</td>
+                  <td>
+                    <a [routerLink]="['/transactions', item.StockCode]">
+                        View Transactions
+                    </a>
               </tr>
           }
       </tbody>
