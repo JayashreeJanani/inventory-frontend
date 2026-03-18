@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import {RouterLink} from '@angular/router';
 import { InventoryService, InventoryItem } from '../../services/inventory.service';
 
 @Component({
   selector: 'app-product-inventory',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink], // Import RouterLink to use routerLink in the template
   templateUrl: './product-inventory.component.html',
   styleUrl: './product-inventory.component.css'
 })

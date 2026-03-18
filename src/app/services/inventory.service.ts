@@ -23,5 +23,9 @@ export class InventoryService {
 
   getInventoryByStockCode(stockCode: string): Observable<InventoryItem[]> {
     return this.http.get<InventoryItem[]>(`${this.apiUrl}/${stockCode}`);
-  }//This is for the api: GET/api/inventory?stock_code=XXX
+  }//This is for the api: GET/api/inventory/"stock_code"
+
+  getInventoryByStockCodeAndWarehouse(stockCode: string, warehouseId: string): Observable<InventoryItem>{
+    return this.http.get<InventoryItem>(`${this.apiUrl}/${stockCode}/${warehouseId}`);
+  }//This is for the api: GET/api/inventory/"stock_code"/"warehouse_id"
 }

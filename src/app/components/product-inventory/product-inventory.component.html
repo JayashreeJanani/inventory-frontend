@@ -29,7 +29,11 @@
           @for (item of inventoryItems; track item.StockCode) {
               <tr>
                   <td>{{ item.StockCode }}</td>
-                  <td>{{ item.WarehouseID }}</td>
+                  <td>
+                     <a [routerLink]="['/product', item.StockCode, 'warehouse', item.WarehouseID]">
+                        {{ item.WarehouseID }}
+                        </a></td>  <!-- Added routerLink for navigation -->
+                    
                   <td>{{ item.Description }}</td>
                   <td>{{ item.CurrentStock }}</td>
                   <td>{{ item.AveragePrice }}</td>
