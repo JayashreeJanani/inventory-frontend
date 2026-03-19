@@ -3,11 +3,12 @@ import { InventoryListComponent } from './components/inventory-list/inventory-li
 import { ProductInventoryComponent } from './components/product-inventory/product-inventory.component';
 import { ProductWarehouseDetailComponent } from './components/product-warehouse-detail/product-warehouse-detail.component';
 import { TransactionHistoryComponent } from './components/transaction-history/transaction-history.component';
-
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/inventory', pathMatch: 'full' },
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  {path: 'dashboard', component: DashboardComponent},
   { path: 'inventory', component: InventoryListComponent },
   { path: 'product/:stockCode', component: ProductInventoryComponent },
   { path: 'product/:stockCode/warehouse/:warehouseId', component: ProductWarehouseDetailComponent },

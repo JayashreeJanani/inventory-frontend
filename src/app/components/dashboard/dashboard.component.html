@@ -1,0 +1,30 @@
+
+<h2>Dashboard</h2>
+
+<div *ngIf="loading">Loading dashboard...</div>
+
+<div class="dashboard" *ngIf="!loading">
+  <div class="card">
+    <h3>Total Inventory Items</h3>
+    <p>{{ totalProducts }}</p>
+  </div>
+
+  <div class="card">
+    <h3>Total Stock</h3>
+    <p>{{ totalStock }}</p>
+  </div>
+
+  <div class="card">
+    <h3>Unique Warehouses</h3>
+    <p>{{ uniqueWarehouses }}</p>
+  </div>
+
+  <div class="card">
+    <h3>Total Transactions</h3>
+    <p>{{ totalTransactions }}</p>
+  </div>
+</div>
+
+<div class="chart-container" *ngIf="!loading">
+  <canvas id="stockChart"></canvas>
+</div>
