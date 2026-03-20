@@ -20,8 +20,8 @@ export class DashboardComponent {
   stockChart: any;
   loading = false;
   itemsData: InventoryItem[] = [];
-  lowStockItems: InventoryItem[] = [];//This for low stock items
-  topProducts: InventoryItem[] = [];//This is for top products based on stock quantity
+  // lowStockItems: InventoryItem[] = [];//This for low stock items
+  // topProducts: InventoryItem[] = [];//This is for top products based on stock quantity
   @ViewChild('stockCanvas') stockCanvas!: ElementRef<HTMLCanvasElement>;
 
   constructor(private inventoryService: InventoryService) {}
