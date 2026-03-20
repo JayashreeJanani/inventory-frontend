@@ -21,3 +21,31 @@
   width: 100%;
   max-width: 900px;
 }
+
+.top-products-section {
+  margin-top: 30px;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.top-products-section table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.top-products-section th,
+.top-products-section td {
+  padding: 10px;
+  text-align: left;
+}
+
+.top-products-section th {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.top-products-section tr:nth-child(even) {
+  background-color: #f9fafb;
+}

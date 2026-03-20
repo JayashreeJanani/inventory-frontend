@@ -6,14 +6,14 @@
 <div class="dashboard" *ngIf="!loading">
   <div class="card">
     <h3>Total Inventory Items</h3>
-    <!-- <p>{{ totalProducts }}</p> -->
-     <p>To be implemented at last</p>
+    <p>{{ totalProducts }}</p>
+     <!-- <p>To be implemented at last</p> -->
   </div>
 
   <div class="card">
     <h3>Total Stock</h3>
-    <!-- <p>{{ totalStock }}</p> -->
-    <p>To be implemented at last</p>
+    <p>{{ totalStock }}</p>
+    <!-- <p>To be implemented at last</p> -->
   </div>
 
   <div class="card">
@@ -28,6 +28,59 @@
 
   
 </div>
-<div class="chart-container" *ngIf="!loading">
+<div class="chart-container">
   <canvas #stockCanvas></canvas>
 </div>
+
+<!-- <div class="low-stock-section" *ngIf="!loading">
+  <h3>Low Stock Items</h3>
+
+  <table *ngIf="lowStockItems.length > 0" border="1">
+    <thead>
+      <tr>
+        <th>Stock Code</th>
+        <th>Warehouse</th>
+        <th>Description</th>
+        <th>Current Stock</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of lowStockItems">
+        <td>{{ item.StockCode }}</td>
+        <td>{{ item.WarehouseID }}</td>
+        <td>{{ item.Description }}</td>
+        <td>{{ item.CurrentStock }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="lowStockItems.length === 0">
+    No low-stock items found.
+  </div>
+</div> -->
+<!-- Uncomment before demo -->
+<!-- <div class="top-products-section" *ngIf="!loading">
+  <h3>Top Products by Stock Quantity</h3>
+
+  <table *ngIf="topProducts.length > 0" border="1">
+    <thead>
+      <tr>
+        <th>Stock Code</th>
+        <th>Warehouse</th>
+        <th>Description</th>
+        <th>Current Stock</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of topProducts">
+        <td>{{ item.StockCode }}</td>
+        <td>{{ item.WarehouseID }}</td>
+        <td>{{ item.Description }}</td>
+        <td>{{ item.CurrentStock }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="topProducts.length === 0">
+    No products found.
+  </div> -->

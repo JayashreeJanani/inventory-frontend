@@ -1,7 +1,8 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { InventoryService, InventoryItem } from '../../services/inventory.service';
+import { DashboardSummary, InventoryService, InventoryItem } from '../../services/inventory.service';
 import { Chart } from 'chart.js/auto';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -19,7 +20,8 @@ export class DashboardComponent {
   stockChart: any;
   loading = false;
   itemsData: InventoryItem[] = [];
-
+  lowStockItems: InventoryItem[] = [];//This for low stock items
+  topProducts: InventoryItem[] = [];//This is for top products based on stock quantity
   @ViewChild('stockCanvas') stockCanvas!: ElementRef<HTMLCanvasElement>;
 
   constructor(private inventoryService: InventoryService) {}
@@ -29,35 +31,46 @@ export class DashboardComponent {
   }
 
   loadDashboardData(): void {
-    this.loading = true;
+  this.loading = true;
 
-    this.inventoryService.getInventoryItems().subscribe({
-      next: (items: InventoryItem[]) => {
-        this.itemsData = items;
+  this.inventoryService.getDashboardSummary().subscribe({
+    next: (summary: DashboardSummary) => {
+      this.totalProducts = summary.totalProducts;
+      this.totalStock = summary.totalStock;
+      this.uniqueWarehouses = summary.uniqueWarehouses;
+      this.totalTransactions = summary.totalTransactions;
+      this.loading = false;
+    },
+    error: (err) => {
+      console.error('Error loading dashboard summary:', err);
+      this.loading = false;
+    }
+  });
 
-        this.totalProducts = items.length;
+  this.inventoryService.getInventoryItems().subscribe({
+    next: (items: InventoryItem[]) => {
+      this.itemsData = items;
+       //We will uncomment this during demo
+  //     this.lowStockItems = items
 
-        this.totalStock = items.reduce((sum, item) => {
-          return sum + (Number(item.CurrentStock) || 0);
-        }, 0);
+  // .filter(item => (Number(item.CurrentStock) || 0) < 20)
+  // .slice(0, 10); 
 
-        const warehouseSet = new Set(items.map(i => i.WarehouseID));
-        this.uniqueWarehouses = warehouseSet.size;
+      // Threshold of 20 is arbitrary. and it limits to top 10 rows.
 
-        this.totalTransactions = items.length * 5;
-
-        this.loading = false;
-
-        // setTimeout(() => {
-        //   this.createStockChart(this.itemsData);
-        // }, 0);
-      },
-      error: (err) => {
-        console.error('Error loading dashboard data:', err);
-        this.loading = false;
-      }
-    });
-  }
+//       this.topProducts = [...items]
+// .sort((a, b) => (Number(b.CurrentStock) || 0) - (Number(a.CurrentStock) || 0))
+// .slice(0, 10); 
+// Get top 10 products by stock quantity
+      // setTimeout(() => {
+      //   this.createStockChart(this.itemsData);
+      // }, 0);
+    },
+    error: (err) => {
+      console.error('Error loading inventory for chart:', err);
+    }
+  });
+}
 
   createStockChart(items: InventoryItem[]): void {
     if (!this.stockCanvas) {
@@ -77,8 +90,8 @@ export class DashboardComponent {
       }
     });
 
-    const labels = Array.from(warehouseMap.keys());
-    const data = Array.from(warehouseMap.values());
+    // const labels = Array.from(warehouseMap.keys());
+    // const data = Array.from(warehouseMap.values());
 
     // if (this.stockChart) {
     //   this.stockChart.destroy();

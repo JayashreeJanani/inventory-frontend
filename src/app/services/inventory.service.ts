@@ -29,6 +29,13 @@ export interface InventoryTransaction {
   Description: string;
 }
 
+//This interface is used for the API endpoint: GET/api/dashboard/summary
+export interface DashboardSummary {
+  totalProducts: number;
+  totalStock: number;
+  uniqueWarehouses: number;
+  totalTransactions: number;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -53,4 +60,8 @@ export class InventoryService {
     return this.http.get<InventoryTransaction[]>(`http://127.0.0.1:8000/api/transactions/${stockCode}`);
   }//This is for the api: GET/api/inventory/"stock_code"/transactions
 
+  getDashboardSummary(): Observable<DashboardSummary> {
+  return this.http.get<DashboardSummary>('http://127.0.0.1:8000/api/dashboard/summary');
+}
+  
 }
