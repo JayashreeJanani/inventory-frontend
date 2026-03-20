@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { InventoryService, InventoryItem } from '../../services/inventory.service';
 import { Chart } from 'chart.js/auto';
@@ -18,8 +18,9 @@ export class DashboardComponent {
 
   stockChart: any;
   loading = false;
-
   itemsData: InventoryItem[] = [];
+
+  @ViewChild('stockCanvas') stockCanvas!: ElementRef<HTMLCanvasElement>;
 
   constructor(private inventoryService: InventoryService) {}
 
@@ -58,41 +59,56 @@ export class DashboardComponent {
     });
   }
 
-  // createStockChart(items: InventoryItem[]): void {
-  //   const warehouseMap = new Map<string, number>();
+  createStockChart(items: InventoryItem[]): void {
+    if (!this.stockCanvas) {
+      console.error('Canvas not found');
+      return;
+    }
 
-  //   items.forEach(item => {
-  //     const stock = Number(item.CurrentStock) || 0;
+    const warehouseMap = new Map<string, number>();
 
-  //     if (warehouseMap.has(item.WarehouseID)) {
-  //       warehouseMap.set(item.WarehouseID, warehouseMap.get(item.WarehouseID)! + stock);
-  //     } else {
-  //       warehouseMap.set(item.WarehouseID, stock);
-  //     }
-  //   });
+    items.forEach(item => {
+      const stock = Number(item.CurrentStock) || 0;
 
-  //   const labels = Array.from(warehouseMap.keys());
-  //   const data = Array.from(warehouseMap.values());
+      if (warehouseMap.has(item.WarehouseID)) {
+        warehouseMap.set(item.WarehouseID, warehouseMap.get(item.WarehouseID)! + stock);
+      } else {
+        warehouseMap.set(item.WarehouseID, stock);
+      }
+    });
 
-  //   if (this.stockChart) {
-  //     this.stockChart.destroy();
-  //   }
+    const labels = Array.from(warehouseMap.keys());
+    const data = Array.from(warehouseMap.values());
 
-  //   this.stockChart = new Chart('stockChart', {
-  //     type: 'bar',
-  //     data: {
-  //       labels: labels,
-  //       datasets: [
-  //         {
-  //           label: 'Total Stock by Warehouse',
-  //           data: data
-  //         }
-  //       ]
-  //     },
-  //     options: {
-  //       responsive: true,
-  //       maintainAspectRatio: false
-  //     }
-  //   });
-  // }
+    // if (this.stockChart) {
+    //   this.stockChart.destroy();
+    // }
+
+    // this.stockChart = new Chart(this.stockCanvas.nativeElement, {
+    //   type: 'bar',
+    //   data: {
+    //     labels: labels,
+    //     datasets: [
+    //       {
+    //         label: 'Total Stock by Warehouse',
+    //         data: data
+    //       }
+    //     ]
+    //   },
+    //   options: {
+    //     responsive: true,
+    //     maintainAspectRatio: false,
+    //     plugins: {
+    //       legend: {
+    //         display: true
+    //       }
+    //     },
+    //     scales: {
+    //       y: {
+    //         beginAtZero: true
+    //       }
+    //     }
+    //   }
+    // });
+  }
 }
