@@ -3,10 +3,39 @@
         Smart Inventory Management System
     </div>
 
-    <div class = "navbar-right">
+    <!-- <div class = "navbar-right" *ngIf="!authService.isLoggedIn()">
         <a routerLink="/login" class = "login-btn">
             Login
         </a>
-    </div>
+    </div> -->
+<div class="nav-links" *ngIf="authService.isLoggedIn()">
+    <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+    <a *ngIf="authService.getRole() === 'admin' ||authService.getRole()=== 'manager'" routerLink="/inventory" routerLinkActive="active">Inventory</a>
 
+    <a 
+        *ngIf="authService.getRole() === 'admin'"
+        (click) ="openTransactionPopup()"
+        class="nav-link-button"
+        routerLinkActive="active"
+    >Transaction details</a>
+    <button class="logout-btn" (click)="logout()">Logout</button>
+
+
+</div>
+<div class="modal-backdrop" *ngIf="showTransactionPopup">
+  <div class="modal-content transaction-modal">
+    <button class="close-btn" (click)="closeTransactionPopup()">×</button>
+
+    <h3>Search Transaction History</h3>
+
+    <input
+      type="text"
+      placeholder="Enter Stock Code"
+      [(ngModel)]="selectedStockCode"
+      (keyup.enter)="goToTransactionPage()"
+    />
+
+    <button class="search-btn" (click)="goToTransactionPage()">Search</button>
+  </div>
+</div>
 </nav>

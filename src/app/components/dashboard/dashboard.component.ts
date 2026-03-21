@@ -6,6 +6,7 @@ import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import ChartDataLabels from 'chartjs-plugin-datalabels'; // Import the datalabels plugin
 import { ProductInventoryComponent } from '../product-inventory/product-inventory.component';
+import { Auth } from '../../services/auth.service';
 
 //chart redister of datalabels);
 Chart.register
@@ -39,9 +40,8 @@ export class DashboardComponent {
   @ViewChild('topProductsCanvas') topProductsCanvas!: ElementRef<HTMLCanvasElement>;
   constructor(
     private inventoryService: InventoryService, 
-    private router: Router) {
-    
-  }
+    public authService: Auth,
+    private router: Router) {}
 
   ngOnInit(): void {
     this.loadDashboardData();
@@ -79,6 +79,7 @@ export class DashboardComponent {
 
 
     this.selectedStockCode = term;
+    this.authService.setSelectedStockCode(term);
     this.showProductPopup = true;
     this.openProductPopup(term);
   

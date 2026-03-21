@@ -28,14 +28,14 @@
       </a>
     </li>
   </ul>
-
+ <h5>Hi, {{authService.getUsername()}}</h5>
 <div class="dashboard" *ngIf="!loading">
   <div class="card">
     <h3>Total Inventory Items</h3>
     <p>{{ totalProducts }}</p>
      <!-- <p>To be implemented at last</p> -->
   </div>
-
+ 
   <div class="card">
     <h3>Total Stock</h3>
     <p>{{ totalStock }}</p>
