@@ -3,6 +3,7 @@ import { InventoryService, InventoryItem } from '../../services/inventory.servic
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router'; // Import RouterModule for routerLink
 
+
 @Component({
   selector: 'app-inventory-list',
   templateUrl: './inventory-list.component.html',

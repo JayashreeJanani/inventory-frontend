@@ -1,8 +1,28 @@
-
 <h2>Dashboard</h2>
 
 <div *ngIf="loading">Loading dashboard...</div>
+<div class="search-container">
+  <input
+    type="text"
+    placeholder="Search product..."
+    [(ngModel)]="searchTerm"
+    (input)="filterItems()"
+    (keyup.enter)="goToProductOnEnter()"
+  />
 
+  <i
+    class="fa-solid fa-magnifying-glass search-icon"
+    (click)="goToProductOnEnter()"
+  ></i>
+
+  <ul *ngIf="searchTerm && searchResults.length > 0" class="search-results">
+    <li *ngFor="let item of searchResults">
+      <a [routerLink]="['/product', item.StockCode]">
+        {{ item.StockCode }} - {{ item.Description }}
+      </a>
+    </li>
+  </ul>
+</div>
 <div class="dashboard" *ngIf="!loading">
   <div class="card">
     <h3>Total Inventory Items</h3>
@@ -30,6 +50,14 @@
 </div>
 <div class="chart-container">
   <canvas #stockCanvas></canvas>
+</div>
+<div class="chart-container">
+  <canvas #transactionTrendCanvas></canvas>
+</div>
+
+<div class="Chart-container">
+  <canvas #topProductsCanvas></canvas>
+
 </div>
 
 <!-- <div class="low-stock-section" *ngIf="!loading">

@@ -1,13 +1,17 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DashboardSummary, InventoryService, InventoryItem } from '../../services/inventory.service';
+import { DashboardSummary, InventoryService, InventoryItem,TransactionTrend,TopProducts } from '../../services/inventory.service';
 import { Chart } from 'chart.js/auto';
+import { Router, RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import ChartDataLabels from 'chartjs-plugin-datalabels'; // Import the datalabels plugin
 
-
+//chart redister of datalabels);
+Chart.register
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule,RouterLink], // Import RouterLink and FormsModule for search functionality
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
@@ -16,19 +20,65 @@ export class DashboardComponent {
   totalStock = 0;
   uniqueWarehouses = 0;
   totalTransactions = 0;
+  searchTerm = '';
+  topProductsChart: any;
+
+
 
   stockChart: any;
+  transactionTrendChart: any;
   loading = false;
   itemsData: InventoryItem[] = [];
+  searchResults: InventoryItem[] = [];//This is for search bar in the dashboard.
   // lowStockItems: InventoryItem[] = [];//This for low stock items
   // topProducts: InventoryItem[] = [];//This is for top products based on stock quantity
   @ViewChild('stockCanvas') stockCanvas!: ElementRef<HTMLCanvasElement>;
-
-  constructor(private inventoryService: InventoryService) {}
+  @ViewChild('transactionTrendCanvas') transactionTrendCanvas!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('topProductsCanvas') topProductsCanvas!: ElementRef<HTMLCanvasElement>;
+  constructor(
+    private inventoryService: InventoryService, 
+    private router: Router) {
+    
+  }
 
   ngOnInit(): void {
     this.loadDashboardData();
   }
+
+  //Search product filter function for the search bar in the dashboard
+  filterItems(): void {
+    const term = this.searchTerm.toLowerCase().trim();
+
+    if (!term) {
+      this.searchResults = [];
+      return;
+    }
+
+    this.searchResults = this.itemsData
+    .filter(item =>
+      String(item.StockCode).toLowerCase().includes(term) ||
+      String(item.Description).toLowerCase().includes(term)
+    )
+    .slice(0, 10); // Limit to top 10 results
+  }
+  //after searching a product and typing enter
+  goToProductOnEnter(): void {
+    console.log('Enter key pressed. Search term:', this.searchTerm);
+    alert('Enter key pressed. Search term: ' + this.searchTerm); // Debugging alert
+    const term = this.searchTerm.toLowerCase().trim();
+
+    if (!term) {
+      return;
+    }
+
+   
+    
+    this.searchResults = [];
+    this.searchTerm = '';
+    this.router.navigate(['/product', term]);
+  
+  }
+
 
   loadDashboardData(): void {
   this.loading = true;
@@ -50,6 +100,7 @@ export class DashboardComponent {
   this.inventoryService.getInventoryItems().subscribe({
     next: (items: InventoryItem[]) => {
       this.itemsData = items;
+
        //We will uncomment this during demo
   //     this.lowStockItems = items
 
@@ -65,12 +116,140 @@ export class DashboardComponent {
       // setTimeout(() => {
       //   this.createStockChart(this.itemsData);
       // }, 0);
-    },
+   },
     error: (err) => {
       console.error('Error loading inventory for chart:', err);
     }
   });
+
+  this.inventoryService.getTransactionTrend().subscribe({
+    next: (trendData: TransactionTrend[]) => {
+      setTimeout(() => {
+        this.createTransactionTrendChart(trendData);
+      }, 100);
+    },
+    error: (err) => {
+      console.error('Error in  loading transaction trend data:', err);
+    }
+  });
+  // this.inventoryService.getTopProducts().subscribe({
+  //   next: (topProductsData: TopProducts[]) => {
+  //     setTimeout(() => { 
+  //       this.createTopProductsChart(topProductsData);
+  //     }, 100);
+  //   },
+  //   error: (err) => {
+  //     console.error('Error in loading top products data:', err);
+  //   }
+  // });
+
+  this.inventoryService.getTopProducts().subscribe({
+    next:(data: TopProducts[]) => {
+      setTimeout(() => {
+        this.createTopProductsChart(data);
+      }, 100);
+    },
+    error: (err) => {
+      console.error('Error loading top products data:', err);
+    }
+  });
+
+
 }
+ createTopProductsChart(products: TopProducts[]): void {
+  if (!this.topProductsCanvas) {
+    console.error('Top products canvas not found');
+    return;
+  }
+
+  const labels = products.map(
+    p => `${p.Description} (${p.StockCode})`
+  );
+
+  const data = products.map(
+    p => p.totalQuantity
+  );
+
+  if (this.topProductsChart) {
+    this.topProductsChart.destroy();
+  }
+
+  this.topProductsChart = new Chart(
+    this.topProductsCanvas.nativeElement,
+    {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Top Products',
+            data: data
+          }
+        ]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false
+          },
+          datalabels: {
+            anchor: 'end',
+            align: 'end',
+            formatter: (value) => value,
+            font: {
+              weight: 'bold'
+            }
+          }
+        },
+        scales: {
+          x: {
+            beginAtZero: true
+          }
+        }
+      },
+      plugins: [ChartDataLabels]
+    }
+  );
+}
+  createTransactionTrendChart(trendData: TransactionTrend[]) {
+    if (!this.transactionTrendCanvas) {
+      console.error('Transaction trend canvas not found');
+      return;
+    }
+
+    const labels = trendData.map(t => t.period);
+    const data = trendData.map(t => t.count); 
+
+    if (this.transactionTrendChart) {
+      this.transactionTrendChart.destroy();
+    } 
+
+    this.transactionTrendChart = new Chart(
+      this.transactionTrendCanvas.nativeElement, 
+      {
+        type: 'line',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Transactions Over Time',
+              data: data,
+              fill: false,
+              tension: 0.3
+            }
+          ]
+        },
+
+        options: {
+          responsive: true,
+          maintainAspectRatio: false
+        }
+      }
+    );
+  }
 
   createStockChart(items: InventoryItem[]): void {
     if (!this.stockCanvas) {
@@ -89,6 +268,10 @@ export class DashboardComponent {
         warehouseMap.set(item.WarehouseID, stock);
       }
     });
+
+
+    
+   
 
     // const labels = Array.from(warehouseMap.keys());
     // const data = Array.from(warehouseMap.values());

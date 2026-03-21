@@ -37,6 +37,20 @@ export interface DashboardSummary {
   totalTransactions: number;
 }
 
+//This interface is used for the API enpoint:/GET/api/dashboard/transaction-trend
+export interface TransactionTrend {
+  period: string;
+  count: number;
+}
+
+//This interface for Top Products chart
+export interface TopProducts{
+  StockCode: string;
+  Description: string;
+  totalQuantity:number;
+}
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -62,6 +76,15 @@ export class InventoryService {
 
   getDashboardSummary(): Observable<DashboardSummary> {
   return this.http.get<DashboardSummary>('http://127.0.0.1:8000/api/dashboard/summary');
-}
-  
+}//This is for the api: GET/api/dashboard/summary
+
+  getTransactionTrend(): Observable<TransactionTrend[]> {
+    return this.http.get<TransactionTrend[]>(
+      'http://127.0.0.1:8000/api/dashboard/transaction-trend'
+    );
+  }//This is for the api: GET/api/dashboard/transaction-trend
+
+  getTopProducts(): Observable<TopProducts[]> {
+    return this.http.get<TopProducts[]>('http://127.0.0.1:8000/api/dashboard/top-products');
+  }//This is for the api: GET/api/dashboard/top-products
 }
