@@ -24,7 +24,7 @@
               <th>Current Stock</th>
               <th>Average Price</th>
               <th>Country</th>
-              <th>Transactions</th>
+              <th *ngIf="authService.getRole() === 'admin'">Transactions</th>
           </tr>
       </thead>
       <tbody>
@@ -40,7 +40,7 @@
                   <td>{{ item.CurrentStock }}</td>
                   <td>{{ item.AveragePrice }}</td>
                   <td>{{ item.Country }}</td>
-                  <td>
+                  <td *ngIf="authService.getRole() === 'admin'">
                     <a [routerLink]="['/transactions', item.StockCode]">
                         View Transactions
                     </a>

@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import {RouterLink} from '@angular/router';
 import { InventoryService, InventoryItem } from '../../services/inventory.service';
 import { Input } from '@angular/core';
+import { Auth } from '../../services/auth.service';
 
 @Component({
   selector: 'app-product-inventory',
@@ -19,6 +20,7 @@ export class ProductInventoryComponent {
   error = '';
   
   constructor(
+    public authService: Auth,
     private route: ActivatedRoute,
     private inventoryService: InventoryService
   ) {}

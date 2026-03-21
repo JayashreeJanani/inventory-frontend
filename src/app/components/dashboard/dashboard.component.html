@@ -5,7 +5,7 @@
 <div *ngIf="loading">Loading dashboard...</div>
 
 
-<div class="search-box">
+<div *ngIf="authService.getRole() === 'manager' || authService.getRole() === 'admin'" class="search-box">
   <input
     class="search-input"
     type="text"
