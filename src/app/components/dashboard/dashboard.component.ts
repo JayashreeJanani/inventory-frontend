@@ -5,13 +5,14 @@ import { Chart } from 'chart.js/auto';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import ChartDataLabels from 'chartjs-plugin-datalabels'; // Import the datalabels plugin
+import { ProductInventoryComponent } from '../product-inventory/product-inventory.component';
 
 //chart redister of datalabels);
 Chart.register
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule,RouterLink], // Import RouterLink and FormsModule for search functionality
+  imports: [CommonModule, FormsModule, RouterLink, ProductInventoryComponent], // Import RouterLink and FormsModule for search functionality
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
@@ -22,7 +23,8 @@ export class DashboardComponent {
   totalTransactions = 0;
   searchTerm = '';
   topProductsChart: any;
-
+  showProductPopup = false;
+  selectedStockCode = '';
 
 
   stockChart: any;
@@ -72,13 +74,33 @@ export class DashboardComponent {
     }
 
    
-    
-    this.searchResults = [];
-    this.searchTerm = '';
-    this.router.navigate(['/product', term]);
+  
+
+
+
+    this.selectedStockCode = term;
+    this.showProductPopup = true;
+    this.openProductPopup(term);
   
   }
+  //pop for product-inventory
+openProductPopup(stockCode: string): void {
+  const term =this.searchTerm.toLowerCase().trim();
+  if (!term) {
+    return;
+  }
 
+  this.selectedStockCode = stockCode;
+  this.showProductPopup = true;
+}
+
+//close method for popup
+closeProductPopup(): void {
+  this.showProductPopup = false;
+  this.selectedStockCode = '';
+  this.searchTerm = '';
+  this.searchResults = [];
+}
 
   loadDashboardData(): void {
   this.loading = true;

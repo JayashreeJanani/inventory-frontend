@@ -21,6 +21,14 @@
   font-size: 22px;
   font-weight: 700;
   letter-spacing: 0.4px;
+  cursor: pointer;
+}
+
+.logo:hover {
+  color: #3b82f6; /* lighter blue on hover */
+  opacity: 0.85;
+  transition: cubic-bezier(1, 0, 0, 1)  0.2s;
+
 }
 
 .navbar-left,

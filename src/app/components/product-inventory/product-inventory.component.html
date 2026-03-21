@@ -14,7 +14,8 @@
   <div>No inventory items found for this Product ID.</div>
 }
 @if (!loading && inventoryItems.length > 0) {
-  <table border="1" cellpadding="8" cellspacing="0">
+  <div class="table-container">
+  <table class="styled-table" border="1" cellpadding="8" cellspacing="0">
       <thead>
           <tr>
               <th>Stock Code</th>
@@ -47,4 +48,5 @@
           }
       </tbody>
   </table>
+  </div>
 }

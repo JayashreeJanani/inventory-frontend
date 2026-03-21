@@ -11,3 +11,53 @@ h1,h2,h3{
 p{
     font: weight 400px;
 }
+
+.table-container {
+  margin-top: 24px;
+  margin-left: 20px;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+  overflow-x: auto;
+  width: 95%;
+  align-self:center;
+}
+
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  border-radius: 12px;
+}
+
+.styled-table thead {
+  background-color: #1f2937;
+  color: white;
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 14px 16px;
+  text-align: left;
+}
+
+.styled-table tbody tr {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.styled-table tbody tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+.styled-table tbody tr:hover {
+  background-color: #eef4ff;
+}
+
+.styled-table th {
+  font-weight: 600;
+}
+
+.styled-table td {
+  color: #374151;
+}

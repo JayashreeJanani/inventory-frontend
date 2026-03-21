@@ -9,7 +9,8 @@
 }
 
 @if (!loading && transactions.length > 0) {
-  <table border="1" cellpadding="8" cellspacing="0">
+  <div class="table-container">
+  <table class="styled-table" border="0" cellpadding="8" cellspacing="0">
       <thead>
           <tr>
               <th>Invoice</th>
@@ -38,6 +39,7 @@
           }
       </tbody>
   </table>
+  </div>
 }
 
 @if(!loading && transactions.length === 0) {

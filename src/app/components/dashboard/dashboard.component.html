@@ -72,11 +72,17 @@
 
 </div>
 </div>
+<div class="modal-backdrop" *ngIf="showProductPopup">
+  <div class="modal-content">
+    <button class="close-btn" (click)="closeProductPopup()">×</button>
 
+    <app-product-inventory [stockCode]="selectedStockCode"></app-product-inventory>
+  </div>
+</div>
 <!-- <div class="low-stock-section" *ngIf="!loading">
   <h3>Low Stock Items</h3>
-
-  <table *ngIf="lowStockItems.length > 0" border="1">
+<div class="table-container">
+  <table class="styled-table" *ngIf="lowStockItems.length > 0" border="1">
     <thead>
       <tr>
         <th>Stock Code</th>
@@ -94,6 +100,7 @@
       </tr>
     </tbody>
   </table>
+  </div>
 
   <div *ngIf="lowStockItems.length === 0">
     No low-stock items found.
@@ -102,8 +109,8 @@
 <!-- Uncomment before demo -->
 <!-- <div class="top-products-section" *ngIf="!loading">
   <h3>Top Products by Stock Quantity</h3>
-
-  <table *ngIf="topProducts.length > 0" border="1">
+  <div class="table-container">
+  <table class="styled-table" *ngIf="topProducts.length > 0" border="1">
     <thead>
       <tr>
         <th>Stock Code</th>
@@ -121,6 +128,7 @@
       </tr>
     </tbody>
   </table>
+  </div>
 
   <div *ngIf="topProducts.length === 0">
     No products found.
