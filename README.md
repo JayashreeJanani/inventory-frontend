@@ -44,7 +44,7 @@ npm install -g @angular/cli
 
 ###### Check node installation:
 ```
-cd frontend
+cd inventory-frontend
 ```
 
 ###### Install required packages:
