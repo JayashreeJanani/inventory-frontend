@@ -40,32 +40,28 @@ node -v
 npm install -g @angular/cli
 
 ```
-
-
-
-## Frontend Environment setup
-
-
-
-###### Check node installation:
-
-```
-
-cd frontend
-
-```
-
-
-
 ###### Install required packages:
 
-
-
 ```
-
 npm install
+```
+## For rendering charts
+###### Navigate to this folder:
+```
+cd inventory-frontend
 
 ```
+
+###### For chart.js installation:
+
+```
+npm install chart.js
+
+npm install chartjs-plugin-datalabels
+
+```
+
+
 
 ## Starting the application
 
