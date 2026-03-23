@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import {RouterLink} from '@angular/router';
-import { InventoryService, InventoryItem } from '../../services/inventory.service';
+import { InventoryService, InventoryItem, ReorderData,ReorderResponse } from '../../services/inventory.service';
 import { Input } from '@angular/core';
 import { Auth } from '../../services/auth.service';
 
@@ -18,6 +18,8 @@ export class ProductInventoryComponent {
   inventoryItems: InventoryItem[] = [];
   loading = false;
   error = '';
+  //For Forecast purpose
+  reorderMap: {[key: string]: ReorderData} = {};
   
   constructor(
     public authService: Auth,
@@ -50,6 +52,7 @@ export class ProductInventoryComponent {
       next: (data: InventoryItem[]) => {
         this.inventoryItems = data;
         this.loading = false;
+        this.loadReorderRecommendations();
       },
       error: (err) => {
         console.error('Error fetching product inventory:', err);
@@ -58,4 +61,37 @@ export class ProductInventoryComponent {
       }
     });
   }
+
+  //Forecast
+  loadReorderRecommendations(): void{
+  
+    this.inventoryItems.forEach(item=>{
+      console.log("Calling reorder API",item.StockCode,item.WarehouseID)
+      this.inventoryService
+      .getReorderRecommendation(item.StockCode, item.WarehouseID).subscribe({
+        next:(response: ReorderResponse) =>{
+          console.log("API response:",response);
+          if(response.success){
+            
+            const key = this.getReorderKey(item.StockCode, item.WarehouseID);
+            console.log('Reorder key',key);
+            console.log("Reorder data:",response);
+            
+            this.reorderMap[key] =response.data;
+            console.log('Reorder[key]',this.reorderMap[key]);
+          }
+        },
+
+        error:(err) =>{
+          console.error("Error in loading reorder recommendation:",err);
+        }
+
+      });
+    });
+  }
+
+  getReorderKey(stockCode: string, warehouseId: string): string {
+    return `${stockCode}-${warehouseId}`;
+  }
+
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { InventoryService, InventoryItem } from '../../services/inventory.service';
+import { InventoryService, InventoryItem,ReorderData,ReorderResponse } from '../../services/inventory.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router'; // Import RouterModule for routerLink
 
@@ -14,6 +14,8 @@ export class InventoryListComponent implements OnInit {
   inventoryItems: InventoryItem[] = [];
   loading = false;
   error = '';
+  //For Forecast purpose
+  reorderMap: {[key: string]: ReorderData} = {};
 
   constructor(private inventoryService: InventoryService) {}
   
@@ -28,6 +30,7 @@ export class InventoryListComponent implements OnInit {
       next: (data) => {
         this.inventoryItems = data;
         this.loading = false;
+        this.loadReorderRecommendations();
       },
       error: (err) => {
         console.error('Error fetching inventory:', err);
@@ -36,4 +39,37 @@ export class InventoryListComponent implements OnInit {
       }
     });
   }
+
+   //Forecast
+  loadReorderRecommendations(): void{
+  
+    this.inventoryItems.forEach(item=>{
+      console.log("Calling reorder API",item.StockCode,item.WarehouseID)
+      this.inventoryService
+      .getReorderRecommendation(item.StockCode, item.WarehouseID).subscribe({
+        next:(response: ReorderResponse) =>{
+          console.log("API response:",response);
+          if(response.success){
+            
+            const key = this.getReorderKey(item.StockCode, item.WarehouseID);
+            console.log('Reorder key',key);
+            console.log("Reorder data:",response);
+            
+            this.reorderMap[key] =response.data;
+            console.log('Reorder[key]',this.reorderMap[key]);
+          }
+        },
+
+        error:(err) =>{
+          console.error("Error in loading reorder recommendation:",err);
+        }
+
+      });
+    });
+  }
+
+  getReorderKey(stockCode: string, warehouseId: string): string {
+    return `${stockCode}-${warehouseId}`;
+  }
+
 }

@@ -15,8 +15,8 @@
 @if (!loading && inventoryItems.length === 0) {
   <div>No inventory items found.</div>
 }
-
-<table *ngIf="!loading && inventoryItems.length > 0" border="1" cellpadding="8" cellspacing="0">
+<div class="table-container">
+<table class="styled-table"  *ngIf="!loading && inventoryItems.length > 0" border="1" cellpadding="8" cellspacing="0">
     <thead>
         <tr>
             <th>Stock Code</th>
@@ -25,10 +25,15 @@
             <th>Current Stock</th>
             <th>Average Price</th>
             <th>Country</th>
+            <th>Predicted Demand</th>
+            <th>ReorderQty</th>
+            <th>Status</th>
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let item of inventoryItems">  <!-- Fixed: Use inventoryItems (consistent with the table condition) -->
+      @for (item of inventoryItems; track item.StockCode + '-' + item.WarehouseID) {
+          @let reorder = reorderMap[getReorderKey(item.StockCode, item.WarehouseID)];
+        <tr>  <!-- Fixed: Use inventoryItems (consistent with the table condition) -->
             <td>
               <a [routerLink]="['/product', item.StockCode]">{{ item.StockCode }}</a>  <!-- Added routerLink for navigation -->
             </td>             
@@ -37,7 +42,16 @@
             <td>{{ item.CurrentStock }}</td>
             <td>{{ item.AveragePrice }}</td>
             <td>{{ item.Country }}</td>
+            <td>{{ reorder?.predictedDemand != null ? reorder?.predictedDemand : '-' }}</td>
+            <td>{{ reorder?.recommendedReorderQty != null ? reorder?.recommendedReorderQty : '-' }}</td>
+            <td>
+              <span [ngClass]="reorder?.lowStockAlert ? 'status-low' : 'status-safe'">
+                {{ reorder?.lowStockAlert ? 'Low Stock' : 'Safe' }}
+              </span>
+            </td>
         </tr>
+      }
     </tbody>
 </table>
+</div>
 <div *ngIf="!loading && inventoryItems.length === 0">No inventory items found.</div>  <!-- Fixed: Use inventoryItems for consistency -->

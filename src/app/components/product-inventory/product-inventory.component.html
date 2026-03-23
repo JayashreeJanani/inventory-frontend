@@ -1,4 +1,5 @@
 <h2> Product Inventory - {{stockCode}}</h2>
+
 @if (loading) {
   <div>Loading inventory...</div>
 }
@@ -6,47 +7,57 @@
 @if (error) {
   <div class="error">{{ error }}</div>
 }
-@if (!loading && inventoryItems.length > 0) {
-  <!-- table code -->
-}
 
 @if (!loading && inventoryItems.length === 0) {
   <div>No inventory items found for this Product ID.</div>
 }
+
 @if (!loading && inventoryItems.length > 0) {
   <div class="table-container">
-  <table class="styled-table" border="1" cellpadding="8" cellspacing="0">
+    <table class="styled-table" border="1" cellpadding="8" cellspacing="0">
       <thead>
-          <tr>
-              <th>Stock Code</th>
-              <th>Warehouse</th>
-              <th>Description</th>
-              <th>Current Stock</th>
-              <th>Average Price</th>
-              <th>Country</th>
-              <th *ngIf="authService.getRole() === 'admin'">Transactions</th>
-          </tr>
+        <tr>
+          <th>Stock Code</th>
+          <th>Warehouse</th>
+          <th>Description</th>
+          <th>Current Stock</th>
+          <th>Average Price</th>
+          <th>Country</th>
+          <th *ngIf="authService.getRole() === 'admin'">Transactions</th>
+          <th>Predicted Demand</th>
+          <th>ReorderQty</th>
+          <th>Status</th>
+        </tr>
       </thead>
       <tbody>
-          @for (item of inventoryItems; track item.StockCode) {
-              <tr>
-                  <td>{{ item.StockCode }}</td>
-                  <td>
-                     <a [routerLink]="['/product', item.StockCode, 'warehouse', item.WarehouseID]">
-                        {{ item.WarehouseID }}
-                        </a></td>  <!-- Added routerLink for navigation -->
-                    
-                  <td>{{ item.Description }}</td>
-                  <td>{{ item.CurrentStock }}</td>
-                  <td>{{ item.AveragePrice }}</td>
-                  <td>{{ item.Country }}</td>
-                  <td *ngIf="authService.getRole() === 'admin'">
-                    <a [routerLink]="['/transactions', item.StockCode]">
-                        View Transactions
-                    </a>
-              </tr>
-          }
+        @for (item of inventoryItems; track item.StockCode + '-' + item.WarehouseID) {
+          @let reorder = reorderMap[getReorderKey(item.StockCode, item.WarehouseID)];
+          <tr>
+            <td>{{ item.StockCode }}</td>
+            <td>
+              <a [routerLink]="['/product', item.StockCode, 'warehouse', item.WarehouseID]">
+                {{ item.WarehouseID }}
+              </a>
+            </td>
+            <td>{{ item.Description }}</td>
+            <td>{{ item.CurrentStock }}</td>
+            <td>{{ item.AveragePrice }}</td>
+            <td>{{ item.Country }}</td>
+            <td *ngIf="authService.getRole() === 'admin'">
+              <a [routerLink]="['/transactions', item.StockCode]">
+                View Transactions
+              </a>
+            </td>
+            <td>{{ reorder?.predictedDemand != null ? reorder?.predictedDemand : '-' }}</td>
+            <td>{{ reorder?.recommendedReorderQty != null ? reorder?.recommendedReorderQty : '-' }}</td>
+            <td>
+              <span [ngClass]="reorder?.lowStockAlert ? 'status-low' : 'status-safe'">
+                {{ reorder?.lowStockAlert ? 'Low Stock' : 'Safe' }}
+              </span>
+            </td>
+          </tr>
+        }
       </tbody>
-  </table>
+    </table>
   </div>
 }

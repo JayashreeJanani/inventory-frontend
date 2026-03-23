@@ -33,8 +33,8 @@ export class DashboardComponent {
   loading = false;
   itemsData: InventoryItem[] = [];
   searchResults: InventoryItem[] = [];//This is for search bar in the dashboard.
-  // lowStockItems: InventoryItem[] = [];//This for low stock items
-  // topProducts: InventoryItem[] = [];//This is for top products based on stock quantity
+  lowStockItems: InventoryItem[] = [];//This for low stock items
+  topProducts: InventoryItem[] = [];//This is for top products based on stock quantity
   @ViewChild('stockCanvas') stockCanvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild('transactionTrendCanvas') transactionTrendCanvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild('topProductsCanvas') topProductsCanvas!: ElementRef<HTMLCanvasElement>;
@@ -66,7 +66,7 @@ export class DashboardComponent {
   //after searching a product and typing enter
   goToProductOnEnter(): void {
     console.log('Enter key pressed. Search term:', this.searchTerm);
-    alert('Enter key pressed. Search term: ' + this.searchTerm); // Debugging alert
+    // alert('Enter key pressed. Search term: ' + this.searchTerm); // Debugging alert
     const term = this.searchTerm.toLowerCase().trim();
 
     if (!term) {
@@ -125,20 +125,20 @@ closeProductPopup(): void {
       this.itemsData = items;
 
        //We will uncomment this during demo
-  //     this.lowStockItems = items
+      this.lowStockItems = items
 
-  // .filter(item => (Number(item.CurrentStock) || 0) < 20)
-  // .slice(0, 10); 
+  .filter(item => (Number(item.CurrentStock) || 0) < 20)
+  .slice(0, 10); 
 
-      // Threshold of 20 is arbitrary. and it limits to top 10 rows.
+      //Threshold of 20 is arbitrary. and it limits to top 10 rows.
 
-//       this.topProducts = [...items]
-// .sort((a, b) => (Number(b.CurrentStock) || 0) - (Number(a.CurrentStock) || 0))
-// .slice(0, 10); 
-// Get top 10 products by stock quantity
-      // setTimeout(() => {
-      //   this.createStockChart(this.itemsData);
-      // }, 0);
+      this.topProducts = [...items]
+.sort((a, b) => (Number(b.CurrentStock) || 0) - (Number(a.CurrentStock) || 0))
+.slice(0, 10); 
+//Get top 10 products by stock quantity
+      setTimeout(() => {
+        this.createStockChart(this.itemsData);
+      }, 0);
    },
     error: (err) => {
       console.error('Error loading inventory for chart:', err);
@@ -155,16 +155,16 @@ closeProductPopup(): void {
       console.error('Error in  loading transaction trend data:', err);
     }
   });
-  // this.inventoryService.getTopProducts().subscribe({
-  //   next: (topProductsData: TopProducts[]) => {
-  //     setTimeout(() => { 
-  //       this.createTopProductsChart(topProductsData);
-  //     }, 100);
-  //   },
-  //   error: (err) => {
-  //     console.error('Error in loading top products data:', err);
-  //   }
-  // });
+  this.inventoryService.getTopProducts().subscribe({
+    next: (topProductsData: TopProducts[]) => {
+      setTimeout(() => { 
+        this.createTopProductsChart(topProductsData);
+      }, 100);
+    },
+    error: (err) => {
+      console.error('Error in loading top products data:', err);
+    }
+  });
 
   this.inventoryService.getTopProducts().subscribe({
     next:(data: TopProducts[]) => {
@@ -293,41 +293,5 @@ closeProductPopup(): void {
     });
 
 
-    
-   
-
-    // const labels = Array.from(warehouseMap.keys());
-    // const data = Array.from(warehouseMap.values());
-
-    // if (this.stockChart) {
-    //   this.stockChart.destroy();
-    // }
-
-    // this.stockChart = new Chart(this.stockCanvas.nativeElement, {
-    //   type: 'bar',
-    //   data: {
-    //     labels: labels,
-    //     datasets: [
-    //       {
-    //         label: 'Total Stock by Warehouse',
-    //         data: data
-    //       }
-    //     ]
-    //   },
-    //   options: {
-    //     responsive: true,
-    //     maintainAspectRatio: false,
-    //     plugins: {
-    //       legend: {
-    //         display: true
-    //       }
-    //     },
-    //     scales: {
-    //       y: {
-    //         beginAtZero: true
-    //       }
-    //     }
-    //   }
-    // });
   }
 }

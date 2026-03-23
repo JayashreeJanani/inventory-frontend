@@ -55,10 +55,6 @@
   
 </div>
 
-  <div class="chart-card1">
-   
-  <canvas #stockCanvas></canvas>
-</div>
 <br>
 <div class="charts-row">
 <div class="charts-box">
@@ -79,7 +75,7 @@
     <app-product-inventory [stockCode]="selectedStockCode"></app-product-inventory>
   </div>
 </div>
-<!-- <div class="low-stock-section" *ngIf="!loading">
+<div class="low-stock-section" *ngIf="!loading">
   <h3>Low Stock Items</h3>
 <div class="table-container">
   <table class="styled-table" *ngIf="lowStockItems.length > 0" border="1">
@@ -105,9 +101,9 @@
   <div *ngIf="lowStockItems.length === 0">
     No low-stock items found.
   </div>
-</div> -->
+</div> 
 <!-- Uncomment before demo -->
-<!-- <div class="top-products-section" *ngIf="!loading">
+ <div  *ngIf="!loading">
   <h3>Top Products by Stock Quantity</h3>
   <div class="table-container">
   <table class="styled-table" *ngIf="topProducts.length > 0" border="1">
@@ -132,5 +128,5 @@
 
   <div *ngIf="topProducts.length === 0">
     No products found.
-  </div> -->
+  </div>
   

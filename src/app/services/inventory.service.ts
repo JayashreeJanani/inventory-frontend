@@ -50,6 +50,31 @@ export interface TopProducts{
   totalQuantity:number;
 }
 
+//This is for Forecast 
+// export interface ForecastData{
+//   stockCode: string;
+//   predictedDemand: number;
+//   forecastWindowDays: number;
+// }
+
+// export interface ForecastResponse{
+//   success: boolean;
+//   data: ForecastData;
+// }
+export interface ReorderData{
+    stockCode: string;
+    WarehouseID: string;
+    currentStock: number;
+    predictedDemand: number;
+    safetyStock: number;
+    recommendedReorderQty: number;
+    lowStockAlert: boolean;
+}
+
+export interface ReorderResponse{
+  success: boolean;
+  data: ReorderData;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -87,4 +112,9 @@ export class InventoryService {
   getTopProducts(): Observable<TopProducts[]> {
     return this.http.get<TopProducts[]>('http://127.0.0.1:8000/api/dashboard/top-products');
   }//This is for the api: GET/api/dashboard/top-products
+
+  getReorderRecommendation(stockCode:string, warehouseId: string){
+    return this.http.get<ReorderResponse>(`http://127.0.0.1:8000/api/reorder/${stockCode}/${warehouseId}`);
+  }
+
 }
