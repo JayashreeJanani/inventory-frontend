@@ -1,0 +1,9 @@
+.status-low{
+    color: #dc2626;
+    font-weight: 600;
+}
+
+.status-safe{
+    color: #16a34a;
+    font-weight: 600;
+}
