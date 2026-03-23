@@ -16,7 +16,7 @@
   <div>No inventory items found.</div>
 }
 <div class="table-container">
-<table class="styled-table"  *ngIf="!loading && inventoryItems.length > 0" border="1" cellpadding="8" cellspacing="0">
+<table *ngIf="!loading && inventoryItems.length > 0"   class="styled-table"  border="1" cellpadding="8" cellspacing="0">
     <thead>
         <tr>
             <th>Stock Code</th>
@@ -35,7 +35,7 @@
           @let reorder = reorderMap[getReorderKey(item.StockCode, item.WarehouseID)];
         <tr>  <!-- Fixed: Use inventoryItems (consistent with the table condition) -->
             <td>
-              <a [routerLink]="['/product', item.StockCode]">{{ item.StockCode }}</a>  <!-- Added routerLink for navigation -->
+              {{ item.StockCode }}
             </td>             
             <td>{{ item.WarehouseID }}</td>
             <td>{{ item.Description }}</td>  <!-- Note: Typo in 'Desciption' – should be 'Description' if that's the property name -->

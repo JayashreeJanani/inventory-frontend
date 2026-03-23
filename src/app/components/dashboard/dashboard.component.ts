@@ -186,7 +186,7 @@ closeProductPopup(): void {
   }
 
   const labels = products.map(
-    p => `${p.Description} (${p.StockCode})`
+    p => `${p.Description}`
   );
 
   const data = products.map(

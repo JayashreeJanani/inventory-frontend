@@ -2,21 +2,18 @@ h2{
     margin-bottom: 16px;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    
-  
-}
-th{
-    background-color: #f2f2f2;
-    
-}
-th, td {
-  
-    text-align: left;
-}
+
 .error {
     color: red;
     margin-bottom: 12px;
+}
+
+.status-low{
+    color: #dc2626;
+    font-weight: 600;
+}
+
+.status-safe{
+    color: #16a34a;
+    font-weight: 600;
 }
