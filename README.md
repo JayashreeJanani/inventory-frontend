@@ -40,6 +40,13 @@ node -v
 npm install -g @angular/cli
 
 ```
+## Installing Project dependencies
+
+###### Check node installation:
+```
+cd frontend
+```
+
 ###### Install required packages:
 
 ```
