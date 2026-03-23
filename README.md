@@ -1,24 +1,23 @@
 
-
-\# Smart Inventory Management System
-
-
-
-\## Frontend Environment setup
+# Smart Inventory Management System
 
 
 
-\##### For frontend make sure you have installed:
+## Frontend Environment setup
 
 
 
-\* Node.js(v18 or later)
-
-\* Angular CLI
+##### For frontend make sure you have installed:
 
 
 
-\###### Check node installation:
+* Node.js(v18 or later)
+
+* Angular CLI
+
+
+
+###### Check node installation:
 
 
 
@@ -32,7 +31,7 @@ node -v
 
 
 
-\###### If Angular CLI is not installed:
+###### If Angular CLI is not installed:
 
 
 
@@ -44,11 +43,11 @@ npm install -g @angular/cli
 
 
 
-\## Frontend Environment setup
+## Frontend Environment setup
 
 
 
-\###### Check node installation:
+###### Check node installation:
 
 ```
 
@@ -58,7 +57,7 @@ cd frontend
 
 
 
-\###### Install required packages:
+###### Install required packages:
 
 
 
@@ -68,11 +67,11 @@ npm install
 
 ```
 
-\## Starting the application
+## Starting the application
 
 
 
-\###### Starting the server:
+###### Starting the server:
 
 
 
@@ -82,7 +81,7 @@ ng serve
 
 ```
 
-\###### The application will start at:
+###### The application will start at:
 
 ```
 
