@@ -48,6 +48,7 @@ export class Navbar {
 
     this.closeTransactionPopup();
     this.router.navigate(['/transactions', code]);
+    this.selectedStockCode = '';
 
   }
 
