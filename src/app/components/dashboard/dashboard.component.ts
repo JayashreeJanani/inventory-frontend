@@ -35,7 +35,7 @@ export class DashboardComponent {
   searchResults: InventoryItem[] = [];//This is for search bar in the dashboard.
   lowStockItems: InventoryItem[] = [];//This for low stock items
   topProducts: InventoryItem[] = [];//This is for top products based on stock quantity
-  @ViewChild('stockCanvas') stockCanvas!: ElementRef<HTMLCanvasElement>;
+  // @ViewChild('stockCanvas') stockCanvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild('transactionTrendCanvas') transactionTrendCanvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild('topProductsCanvas') topProductsCanvas!: ElementRef<HTMLCanvasElement>;
   constructor(
@@ -120,30 +120,30 @@ closeProductPopup(): void {
     }
   });
 
-  this.inventoryService.getInventoryItems().subscribe({
-    next: (items: InventoryItem[]) => {
-      this.itemsData = items;
+//   this.inventoryService.getInventoryItems().subscribe({
+//     next: (items: InventoryItem[]) => {
+//       this.itemsData = items;
 
-       //We will uncomment this during demo
-      this.lowStockItems = items
+//        //We will uncomment this during demo
+//       this.lowStockItems = items
 
-  .filter(item => (Number(item.CurrentStock) || 0) < 20)
-  .slice(0, 10); 
+//   .filter(item => (Number(item.CurrentStock) || 0) < 20)
+//   .slice(0, 10); 
 
-      //Threshold of 20 is arbitrary. and it limits to top 10 rows.
+//       //Threshold of 20 is arbitrary. and it limits to top 10 rows.
 
-      this.topProducts = [...items]
-.sort((a, b) => (Number(b.CurrentStock) || 0) - (Number(a.CurrentStock) || 0))
-.slice(0, 10); 
-//Get top 10 products by stock quantity
-      setTimeout(() => {
-        this.createStockChart(this.itemsData);
-      }, 0);
-   },
-    error: (err) => {
-      console.error('Error loading inventory for chart:', err);
-    }
-  });
+//       this.topProducts = [...items]
+// .sort((a, b) => (Number(b.CurrentStock) || 0) - (Number(a.CurrentStock) || 0))
+// .slice(0, 10); 
+// //Get top 10 products by stock quantity
+//       setTimeout(() => {
+//         this.createStockChart(this.itemsData);
+//       }, 0);
+//    },
+//     error: (err) => {
+//       console.error('Error loading inventory for chart:', err);
+//     }
+//   });
 
   this.inventoryService.getTransactionTrend().subscribe({
     next: (trendData: TransactionTrend[]) => {
@@ -274,24 +274,24 @@ closeProductPopup(): void {
     );
   }
 
-  createStockChart(items: InventoryItem[]): void {
-    if (!this.stockCanvas) {
-      console.error('Canvas not found');
-      return;
-    }
+  // createStockChart(items: InventoryItem[]): void {
+  //   if (!this.stockCanvas) {
+  //     console.error('Canvas not found');
+  //     return;
+  //   }
 
-    const warehouseMap = new Map<string, number>();
+  //   const warehouseMap = new Map<string, number>();
 
-    items.forEach(item => {
-      const stock = Number(item.CurrentStock) || 0;
+  //   items.forEach(item => {
+  //     const stock = Number(item.CurrentStock) || 0;
 
-      if (warehouseMap.has(item.WarehouseID)) {
-        warehouseMap.set(item.WarehouseID, warehouseMap.get(item.WarehouseID)! + stock);
-      } else {
-        warehouseMap.set(item.WarehouseID, stock);
-      }
-    });
+  //     if (warehouseMap.has(item.WarehouseID)) {
+  //       warehouseMap.set(item.WarehouseID, warehouseMap.get(item.WarehouseID)! + stock);
+  //     } else {
+  //       warehouseMap.set(item.WarehouseID, stock);
+  //     }
+  //   });
 
 
-  }
+  // }
 }
