@@ -120,30 +120,29 @@ closeProductPopup(): void {
     }
   });
 
-//   this.inventoryService.getInventoryItems().subscribe({
-//     next: (items: InventoryItem[]) => {
-//       this.itemsData = items;
+  this.inventoryService.getInventoryItems().subscribe({
+    next: (items: InventoryItem[]) => {
+      this.itemsData = items;
 
-//        //We will uncomment this during demo
-//       this.lowStockItems = items
+       //We will uncomment this during demo
+      this.lowStockItems = items
 
-//   .filter(item => (Number(item.CurrentStock) || 0) < 20)
-//   .slice(0, 10); 
+  .filter(item => (Number(item.CurrentStock) || 0) < 20)
+  .slice(0, 10); 
 
-//       //Threshold of 20 is arbitrary. and it limits to top 10 rows.
+      //Threshold of 20 is arbitrary. and it limits to top 10 rows.
 
-//       this.topProducts = [...items]
-// .sort((a, b) => (Number(b.CurrentStock) || 0) - (Number(a.CurrentStock) || 0))
-// .slice(0, 10); 
-// //Get top 10 products by stock quantity
-//       setTimeout(() => {
-//         this.createStockChart(this.itemsData);
-//       }, 0);
-//    },
-//     error: (err) => {
-//       console.error('Error loading inventory for chart:', err);
-//     }
-//   });
+      this.topProducts = [...items]
+.sort((a, b) => (Number(b.CurrentStock) || 0) - (Number(a.CurrentStock) || 0))
+.slice(0, 10); 
+//Get top 10 products by stock quantity
+      
+   },
+    error: (err) => {
+      console.error('Error loading inventory for chart:', err);
+    }
+  });
+  
 
   this.inventoryService.getTransactionTrend().subscribe({
     next: (trendData: TransactionTrend[]) => {
